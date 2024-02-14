@@ -9,6 +9,8 @@ import chatStateDB, {
   saveParticipants
 } from "./controllers/databaseControllers";
 import {switchToHebrew, switchToArabic, switchToEnglish} from './controllers/languageControllers';
+import {returnValidEvent} from './utils';
+import { saveEvent } from "./controllers/googleSheetsControllers";
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 if (!TELEGRAM_TOKEN) {
@@ -51,6 +53,30 @@ bot.command("help", (ctx) => {
 });
 
 
+bot.command('confirm', async (ctx) => {
+  const currentUser: ChatState = chatStateDB[ctx.chatId];
+  const currentLang = currentUser.lang;
+
+  try {
+    const event = returnValidEvent(currentUser)
+    await saveEvent({
+      name: event.name,
+      participants: event.participants,
+      date: event.date
+    })
+    delete currentUser.eventName
+    delete currentUser.eventDate
+    delete currentUser.eventParticipants
+    currentUser.creationStage = ChatStage.name;
+    currentUser.isCreatingEvent = false;
+    ctx.reply(dictionary[currentLang].eventSaved)
+  } catch (e) {
+    // TODO error handling
+    console.log(e);
+    ctx.reply(dictionary[currentLang].infoMissing)
+  }
+})
+
 bot.on("message", (ctx) => {
   const currentUser = chatStateDB[ctx.chatId];
   const currentLang = currentUser.lang;
@@ -76,3 +102,5 @@ bot.on("message", (ctx) => {
 
 
 bot.start();
+
+export default bot;
