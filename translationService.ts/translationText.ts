@@ -5,7 +5,8 @@ enum TslKeys {
     switched = 'switched',
     continue = 'continue',
     newEvent = 'newEvent',
-    eventSaved = 'eventSaved'
+    eventSaved = 'eventSaved',
+    infoMissing = 'infoMissing' 
 }
 
 type translationMap = Record<TslKeys, string>
@@ -17,7 +18,8 @@ const enText: translationMap = {
     switched: 'switched',
     continue: 'Send /continue to continue adding event, send /restart to start again',
     newEvent: 'great let\'s get going! What the name of the event?',
-    eventSaved: 'event saved'
+    eventSaved: 'event saved',
+    infoMissing: 'info missing'
 }
 
 const heText: translationMap = {
@@ -27,7 +29,8 @@ const heText: translationMap = {
     switched: 'החלפנו',
     continue: 'שלח /continue כדי להמשיך להוסיף אירוע, שלח /restart כדי להתחיל מחדש',
     newEvent: "מעולה בואו נצא לדרך! מה שם האירוע?",
-    eventSaved: 'האירוע נשמר'
+    eventSaved: 'האירוע נשמר',
+    infoMissing: 'חסר מידע'
 }
 
 export const dictionary = {
