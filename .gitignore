@@ -3,3 +3,4 @@ dist/
 .npmrc
 .env
 .env.local
+credentials.json
