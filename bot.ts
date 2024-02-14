@@ -13,6 +13,13 @@ if (!TELEGRAM_TOKEN) {
 const bot = new Bot<MyContext>(TELEGRAM_TOKEN);
 bot.use(saveChatToDB)
 
+bot.command("start", (ctx) => {
+    const currentUser = chatStateDB[ctx.chatId];
+    const currentLang = currentUser.lang;
+    ctx.reply(dictionary[currentLang].intro);
+  }
+)
+
 bot.command("he", switchToHebrew);
 bot.command("ar", switchToArabic);
 bot.command("en", switchToEnglish);
