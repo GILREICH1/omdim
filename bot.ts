@@ -36,6 +36,21 @@ bot.command("he", switchToHebrew);
 bot.command("ar", switchToArabic);
 bot.command("en", switchToEnglish);
 
+bot.command("help", (ctx) => {
+  const currentUser = chatStateDB[ctx.chatId];
+  const currentLang = currentUser.lang;
+  
+  if (currentUser.isCreatingEvent) {
+    ctx.reply(dictionary[currentLang].continue)
+  } else {
+    ctx.reply(dictionary[currentLang].intro);
+  }
+  ctx.reply("לצ'אט בעברית, שלח /he");
+  ctx.reply("Hi! To chat in Arabic, send /ar");
+  ctx.reply("Hi! To chat in English, send /en");
+});
+
+
 bot.on("message", (ctx) => {
   const currentUser = chatStateDB[ctx.chatId];
   const currentLang = currentUser.lang;
