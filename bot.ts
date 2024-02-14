@@ -10,6 +10,7 @@ const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 if (!TELEGRAM_TOKEN) {
   throw new Error("no telegram API token provided");
 }
+
 const bot = new Bot<MyContext>(TELEGRAM_TOKEN);
 bot.use(saveChatToDB)
 
@@ -19,6 +20,13 @@ bot.command("start", (ctx) => {
     ctx.reply(dictionary[currentLang].intro);
   }
 )
+
+bot.command("new", (ctx) => {
+  const currentUser = chatStateDB[ctx.chatId];
+  const currentLang = currentUser.lang;
+  chatStateDB[ctx.chatId].isCreatingEvent = true;
+  ctx.reply(dictionary[currentLang].newEvent);
+});
 
 bot.command("he", switchToHebrew);
 bot.command("ar", switchToArabic);
