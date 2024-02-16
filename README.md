@@ -1,0 +1,3 @@
+- Simple Telegram bot that saves event to a Google sheet:
+- Events save here https://docs.google.com/spreadsheets/d/1JCkO61PUf2-_SdylTwfYIlX66PUHYxO1hJDE2u-cQLg/edit#gid=0
+- run with `npm rundevstart`
