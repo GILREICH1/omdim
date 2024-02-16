@@ -18,18 +18,19 @@ export const saveChatToDB = async (ctx: MyContext, next: NextFunction,) => {
   chatStateDB[chatId] = {
     isCreatingEvent: false,
     lang: chatLanguage,
-    creationStage: ChatStage.name
+    creationStage: ChatStage.new
   };
   await next();
 }
 
 export const saveName = async (ctx: MyContext) => {
   if (!ctx?.message?.text) return;
+  const currentUser = chatStateDB[ctx.chatId];
+  const currentLanguage = currentUser.lang;
 
   const text = ctx.message.text;
-  const currentUser = chatStateDB[ctx.chatId];
   currentUser.eventName = text;
-  currentUser.creationStage = ChatStage.date;
+  currentUser.creationStage = ChatStage.nameSaved;
   ctx.reply(dictionary[currentLanguage].saveDate)
 }
 
@@ -41,9 +42,8 @@ export const saveDate = async (ctx: MyContext) => {
   // TODO validate date
 
   const currentUser = chatStateDB[ctx.chatId];
-  currentUser.eventDate = date;
-  currentUser.creationStage = ChatStage.participants;
-  ctx.reply('great! Now please send the list of participants seperated by commas')
+  currentUser.creationStage = ChatStage.dateSaved;
+  ctx.reply(dictionary[currentLanguage].saveParticipants)
 }
 
 export const saveParticipants = async (ctx: MyContext) => {
@@ -51,7 +51,7 @@ export const saveParticipants = async (ctx: MyContext) => {
   const text = ctx.message.text;
   const currentUser = chatStateDB[ctx.chatId];
   currentUser.eventParticipants = text;
-  currentUser.creationStage = ChatStage.complete;
+  currentUser.creationStage = ChatStage.participantsSaved;
   await confirmEvent(ctx);
 }
 

@@ -6,10 +6,10 @@ export type MyContext = Context & {
 };
 
 export enum ChatStage {
-  name = 'name',
-  date = 'date',
-  participants = 'participants',
-  complete = 'complete'
+  new = 'new',
+  nameSaved = 'nameSaved',
+  dateSaved = 'dateSaved',
+  participantsSaved = 'participantsSaved',
 }
 
 export interface ChatState {

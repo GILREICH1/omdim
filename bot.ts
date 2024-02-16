@@ -68,7 +68,7 @@ bot.command('confirm', async (ctx: MyContext) => {
     delete currentUser.eventName
     delete currentUser.eventDate
     delete currentUser.eventParticipants
-    currentUser.creationStage = ChatStage.name;
+    currentUser.creationStage = ChatStage.nameSaved;
     currentUser.isCreatingEvent = false;
     ctx.reply(dictionary[currentLang].eventSaved)
   } catch (e) {
@@ -80,8 +80,27 @@ bot.command('confirm', async (ctx: MyContext) => {
 
 const eventCreationRouter = async (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
-bot.command('continue', async (ctx: MyContext) => {
+  switch (currentUser.creationStage) {
+    case ChatStage.new:
+      saveName(ctx);
+      break;
+    case ChatStage.nameSaved:
+      saveDate(ctx);
+      break;
+    case ChatStage.dateSaved:
+      saveParticipants(ctx);
+      break;
+    case ChatStage.participantsSaved:
+      confirmEvent(ctx);
+      break;
+  }
+}
+
 bot.on("message", async (ctx: MyContext) => {
+  const currentUser = chatStateDB[ctx.chatId];
+  const currentLang = currentUser.lang;
+  if (currentUser.isCreatingEvent) {
+    await eventCreationRouter(ctx);
   } else {
     ctx.reply(dictionary[currentLang].intro);
   }
