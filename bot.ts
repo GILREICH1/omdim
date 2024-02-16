@@ -30,9 +30,11 @@ bot.command("start", (ctx) => {
 const handleNewEvent = async (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
   const currentLang = currentUser.lang;
-  chatStateDB[ctx.chatId].isCreatingEvent = true;
+  currentUser.isCreatingEvent = true;
   ctx.reply(dictionary[currentLang].newEvent);
-});
+}
+
+bot.command("new", handleNewEvent);
 
 bot.command("he", switchToHebrew);
 bot.command("ar", switchToArabic);
@@ -53,6 +55,13 @@ bot.command("help", async (ctx: MyContext) => {
 });
 
 bot.command('restart', async (ctx: MyContext) => {
+  const currentUser: ChatState = chatStateDB[ctx.chatId];
+  currentUser.creationStage = ChatStage.new;
+  delete currentUser.eventDate;
+  delete currentUser.eventName;
+  delete currentUser.eventParticipants;
+  await handleNewEvent(ctx);
+});
 
 bot.command('confirm', async (ctx: MyContext) => {
   const currentUser: ChatState = chatStateDB[ctx.chatId];
