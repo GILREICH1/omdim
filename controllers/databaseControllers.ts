@@ -62,11 +62,15 @@ export const saveParticipants = async (ctx: MyContext) => {
 
 export const confirmEvent = async (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
+  const currentLanguage = currentUser.lang;
   if (!currentUser.eventDate) throw new Error('no date saved');
   const day = currentUser.eventDate.getDate();
   const month = currentUser.eventDate.getMonth();
   const monthString = monthsArr[month];
-  ctx.reply(`Send /confirm to save event '${currentUser.eventName}' on ${day} of ${monthString}`);
+  await ctx.reply(`${dictionary[currentLanguage].confirmName} ${currentUser.eventName}`)
+  await ctx.reply(`${dictionary[currentLanguage].confirmDate} ${day} ${monthString}`)
+  await ctx.reply(`${dictionary[currentLanguage].confirmParticipants} ${currentUser.eventParticipants}`)
+  ctx.reply(dictionary[currentLanguage].confirm);
 }
 
 export default chatStateDB;
