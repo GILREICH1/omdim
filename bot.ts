@@ -27,7 +27,7 @@ bot.command("start", (ctx) => {
   }
 )
 
-bot.command("new", (ctx) => {
+const handleNewEvent = async (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
   const currentLang = currentUser.lang;
   chatStateDB[ctx.chatId].isCreatingEvent = true;
@@ -38,22 +38,23 @@ bot.command("he", switchToHebrew);
 bot.command("ar", switchToArabic);
 bot.command("en", switchToEnglish);
 
-bot.command("help", (ctx) => {
+bot.command("help", async (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
   const currentLang = currentUser.lang;
-  
+
   if (currentUser.isCreatingEvent) {
-    ctx.reply(dictionary[currentLang].continue)
+    await ctx.reply(dictionary[currentLang].continue)
   } else {
-    ctx.reply(dictionary[currentLang].intro);
+    await ctx.reply(dictionary[currentLang].intro);
   }
   ctx.reply("לצ'אט בעברית, שלח /he");
   ctx.reply("Hi! To chat in Arabic, send /ar");
   ctx.reply("Hi! To chat in English, send /en");
 });
 
+bot.command('restart', async (ctx: MyContext) => {
 
-bot.command('confirm', async (ctx) => {
+bot.command('confirm', async (ctx: MyContext) => {
   const currentUser: ChatState = chatStateDB[ctx.chatId];
   const currentLang = currentUser.lang;
 
@@ -77,24 +78,10 @@ bot.command('confirm', async (ctx) => {
   }
 })
 
-bot.on("message", (ctx) => {
+const eventCreationRouter = async (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
-  const currentLang = currentUser.lang;
-  if (currentUser.isCreatingEvent) {
-    switch (currentUser.creationStage) {
-      case ChatStage.name:
-        saveName(ctx);
-        break;
-      case ChatStage.date:
-        saveDate(ctx);
-        break;
-      case ChatStage.participants:
-        saveParticipants(ctx);
-        break;
-      case ChatStage.complete:
-        confirmEvent(ctx);
-        break;
-    }
+bot.command('continue', async (ctx: MyContext) => {
+bot.on("message", async (ctx: MyContext) => {
   } else {
     ctx.reply(dictionary[currentLang].intro);
   }
