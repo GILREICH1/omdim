@@ -1,6 +1,6 @@
-import {Bot} from 'grammy';
-import {ChatStage, ChatState, MyContext} from './types/chat';
-import {dictionary} from './translationService.ts/translationText';
+import { Bot } from 'grammy';
+import { ChatStage, ChatState, MyContext } from './types/chat';
+import { dictionary } from './translationService.ts/translationText';
 import chatStateDB, {
   confirmEvent,
   saveChatToDB,
@@ -8,8 +8,8 @@ import chatStateDB, {
   saveName,
   saveParticipants
 } from "./controllers/databaseControllers";
-import {switchToHebrew, switchToArabic, switchToEnglish} from './controllers/languageControllers';
-import {returnValidEvent} from './utils';
+import { switchToHebrew, switchToArabic, switchToEnglish } from './controllers/languageControllers';
+import { returnValidEvent } from './utils';
 import { saveEvent } from "./controllers/googleSheetsControllers";
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
@@ -20,11 +20,11 @@ if (!TELEGRAM_TOKEN) {
 const bot = new Bot<MyContext>(TELEGRAM_TOKEN);
 bot.use(saveChatToDB)
 
-bot.command("start", (ctx) => {
-    const currentUser = chatStateDB[ctx.chatId];
-    const currentLang = currentUser.lang;
-    ctx.reply(dictionary[currentLang].intro);
-  }
+bot.command("start", (ctx: MyContext) => {
+  const currentUser = chatStateDB[ctx.chatId];
+  const currentLang = currentUser.lang;
+  ctx.reply(dictionary[currentLang].intro);
+}
 )
 
 const handleNewEvent = async (ctx: MyContext) => {
