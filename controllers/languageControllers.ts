@@ -4,7 +4,7 @@ import chatStateDB from "./databaseControllers";
 
 export const switchToHebrew = (ctx: MyContext) => {
     chatStateDB[ctx.chatId].lang = 'he';
-    ctx.reply(dictionary.ar.switched);
+    ctx.reply(dictionary.he.switched);
   }
 
 export const switchToEnglish = (ctx: MyContext) => {

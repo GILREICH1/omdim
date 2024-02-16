@@ -30,7 +30,7 @@ export const saveName = async (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
   currentUser.eventName = text;
   currentUser.creationStage = ChatStage.date;
-  ctx.reply('great! Now please send the date of the event in dd-mm format, e.g. 14-02')
+  ctx.reply(dictionary[currentLanguage].saveDate)
 }
 
 export const saveDate = async (ctx: MyContext) => {

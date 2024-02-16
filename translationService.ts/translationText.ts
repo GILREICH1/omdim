@@ -6,7 +6,8 @@ enum TslKeys {
     continue = 'continue',
     newEvent = 'newEvent',
     eventSaved = 'eventSaved',
-    infoMissing = 'infoMissing' 
+    infoMissing = 'infoMissing',
+    saveDate = 'saveDate'
 }
 
 type translationMap = Record<TslKeys, string>
@@ -19,7 +20,8 @@ const enText: translationMap = {
     continue: 'Send /continue to continue adding event, send /restart to start again',
     newEvent: 'great let\'s get going! What the name of the event?',
     eventSaved: 'event saved',
-    infoMissing: 'info missing'
+    infoMissing: 'info missing',
+    saveDate: 'Great! Now please send the date in the format mm-dd, for example 02-14 for Feb 14th'
 }
 
 const heText: translationMap = {
@@ -30,7 +32,8 @@ const heText: translationMap = {
     continue: 'שלח /continue כדי להמשיך להוסיף אירוע, שלח /restart כדי להתחיל מחדש',
     newEvent: "מעולה בואו נצא לדרך! מה שם האירוע?",
     eventSaved: 'האירוע נשמר',
-    infoMissing: 'חסר מידע'
+    infoMissing: 'חסר מידע',
+    saveDate: 'מושלם, נא לשלוח את תאריך האירוע בפורמט mm-dd, לדוגמה: 02-14 ל-14 בפברואר'
 }
 
 export const dictionary = {
