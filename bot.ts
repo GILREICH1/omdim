@@ -20,6 +20,7 @@ if (!TELEGRAM_TOKEN) {
 const bot = new Bot<MyContext>(TELEGRAM_TOKEN);
 bot.use(saveChatToDB)
 
+// TODO add cancel command
 bot.command("start", (ctx: MyContext) => {
   const currentUser = chatStateDB[ctx.chatId];
   const currentLang = currentUser.lang;
@@ -81,7 +82,7 @@ bot.command('confirm', async (ctx: MyContext) => {
     currentUser.isCreatingEvent = false;
     ctx.reply(dictionary[currentLang].eventSaved)
   } catch (e) {
-    // TODO error handling
+    // TODO error handling in case of invalid event
     console.log(e);
     ctx.reply(dictionary[currentLang].infoMissing)
   }

@@ -43,6 +43,7 @@ export const saveDate = async (ctx: MyContext) => {
   const text = ctx.message.text;
   const year = new Date().getFullYear().toString();
   const date = dayjs(`${text}-${year}`, "MM-DD-YYYY");
+  // TODO date validation
   
   const currentUser = chatStateDB[ctx.chatId];
   const currentLanguage = currentUser.lang;
