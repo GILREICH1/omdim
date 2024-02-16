@@ -2,6 +2,10 @@ import { NextFunction } from "grammy";
 import { availableLanguages, defaultLanguage, monthsArr } from "../utils";
 import { AvailableLanguage } from "../types/translation";
 import { ChatStage, ChatState, MyContext } from "../types/chat";
+import { dictionary } from "../translationService.ts/translationText";
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
 const chatStateDB: Record<string, ChatState> = {};
 
@@ -36,12 +40,13 @@ export const saveName = async (ctx: MyContext) => {
 
 export const saveDate = async (ctx: MyContext) => {
   if (!ctx?.message?.text) return;
-
   const text = ctx.message.text;
-  const date = new Date(`${text}-2024`);
-  // TODO validate date
-
+  const year = new Date().getFullYear().toString();
+  const date = dayjs(`${text}-${year}`, "MM-DD-YYYY");
+  
   const currentUser = chatStateDB[ctx.chatId];
+  const currentLanguage = currentUser.lang;
+  currentUser.eventDate = date.toDate();
   currentUser.creationStage = ChatStage.dateSaved;
   ctx.reply(dictionary[currentLanguage].saveParticipants)
 }
