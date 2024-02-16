@@ -1,5 +1,6 @@
 import { google } from 'googleapis';
 import { Event } from '../types/chat'
+import { dateToDdMmString } from '../utils';
 
 export const saveEvent = async (event: Event) => {
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
@@ -15,13 +16,13 @@ export const saveEvent = async (event: Event) => {
     const googleSheets = google.sheets({ version: "v4", auth: client });
 
     //@ts-ignore
-    await googleSheets.spreadsheets.values.append({
+    googleSheets.spreadsheets.values.append({
         auth,
         spreadsheetId,
         range: "Sheet1",
         valueInputOption: "USER_ENTERED",
         resource: {
-            values: [[event.name, event.date, event.participants]],
+            values: [[event.name, dateToDdMmString(event.date), event.participants, dateToDdMmString(new Date())]],
         },
     });
 }

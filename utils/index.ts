@@ -19,3 +19,9 @@ export const returnValidEvent = (chatState: ChatState): Event => {
         throw new Error('invalid event')
     }
 }
+
+export const dateToDdMmString = (eventDate: Date) => {
+    const day = eventDate.getDate();
+    const month = eventDate.getMonth();
+    return `${day}-${month+1}`
+}
